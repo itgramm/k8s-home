@@ -1,0 +1,21 @@
+---
+proxmox_node: pxsrv2
+proxmox_user: root@pam
+proxmox_password: pAswOrd
+proxmox_bridge: vmbr0
+proxmox_host: 192.168.1.60
+template_id: 800
+cloudinit_user: k8suser
+cloudinit_password: password
+sshkey: ssh-ed25519 
+
+vms:
+  - id: 700
+    name: k8s-1
+    ip: 192.168.1.240
+  - id: 701
+    name: k8s-2
+    ip: 192.168.1.241
+  - id: 703
+    name: k8s-proxy
+    ip: 192.168.1.243

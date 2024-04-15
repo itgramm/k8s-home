@@ -1,0 +1,23 @@
+---
+- name: Install kubelet kubeadm kubectl
+  hosts: k8s_master, k8s_master2
+  gather_facts: no
+
+  vars_files:
+    - vm_vars.yml
+  
+  tasks:
+    - name: Install kubelet kubeadm kubectl
+      become: yes
+      ansible.builtin.script: ./kubectl_config.sh
+
+    - name: Set /etc/hosts
+      become: yes
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        block: |
+          {{ hostvars[inventory_hostname].groups.k8s_master[0] }} k8s-1
+          {{ hostvars[inventory_hostname].groups.k8s_master2[0] }}  k8s-2
+          {{ hostvars[inventory_hostname].groups.proxy[0] }}  proxy
+
+              

@@ -1,0 +1,52 @@
+---
+- name: Create Virtual Machines in Proxmox
+  hosts: pvenodes
+  gather_facts: no
+
+  vars_files:
+    - vm_vars.yml
+
+  tasks:
+    - name: Clone VM from template
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_host }}"
+        node: "{{ proxmox_node }}"
+        vmid: "{{ template_id }}"
+        newid: "{{ item.id }}"
+        name: "{{ item.name }}"
+        onboot: true
+        clone: arbitrary
+      with_items: "{{ vms }}"
+
+    - name: Waiting for cloning VM
+      pause:
+        seconds: 15
+
+    - name: Update VM configuration
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_host }}"
+        node: "{{ proxmox_node }}"
+        name: "{{ item.name }}"
+        net:
+          net0: 'virtio,bridge={{ proxmox_bridge }},tag=77'
+        ipconfig:
+          ipconfig0: 'ip={{ item.ip }}/24,gw=192.168.1.1'
+        sshkeys: "{{ sshkey }}"
+        ciuser: "{{ cloudinit_user }}"
+        cipassword: "{{ cloudinit_password }}"
+        update: yes
+      with_items: "{{ vms }}"
+
+    - name: Start VM
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_user }}"
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ proxmox_host }}"
+        name: "{{ item.name }}"
+        node: "{{ proxmox_node }}"
+        state: started
+      with_items: "{{ vms }}"

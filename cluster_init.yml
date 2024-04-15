@@ -1,0 +1,9 @@
+---
+- name: Remove k3s on all VMs
+  hosts: k8s_master
+  gather_facts: no
+
+  tasks:
+    - name: Join worker nodes to the cluster
+          command: "{{ hostvars['master']['kubeadm_output']['stdout_lines'][0] }}"
+          when: "'kubeadm join' in hostvars['master']['kubeadm_output']['stdout']"
