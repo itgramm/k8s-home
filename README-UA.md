@@ -116,6 +116,7 @@ bashCopy code
 
     ansible-playbook install_kub.yml -i inventory --user=k8suser
 
+
 ## Налаштування кластера
 
 Підключіться до першої майстер-ноди `k8s-m1` та створіть кластер, у `--control-plane-endpoint` необхідно вказати IP-адресу сервера proxy.

@@ -45,3 +45,5 @@ sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.t
 
 sudo sysctl --system
 sudo systemctl restart containerd
+
+sudo reboot
