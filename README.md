@@ -56,7 +56,6 @@ After running the playbook, virtual machines will be created with configured net
 
 To delete all created virtual machines, use the `delete_vms.yml` playbook:
 
-cssCopy code
 
     ansible-playbook delete_vms.yml -i inventory --user=root
 
@@ -64,7 +63,6 @@ cssCopy code
 
 Installation and configuration of HAproxy is done using the `haproxy.yml` playbook:
 
-cssCopy code
 
     ansible-playbook haproxy.yml -i inventory --user=k8suser
 
