@@ -23,7 +23,6 @@ To run the playbook on a server with Proxmox VM installed, you need to install [
 
 To install, execute the command:
 
-Copy code
 
     apt install python3-proxmoxer
 
