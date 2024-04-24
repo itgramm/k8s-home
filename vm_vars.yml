@@ -8,6 +8,7 @@ template_id: 800
 cloudinit_user: k8suser
 cloudinit_password: password
 sshkey: ssh-ed25519 
+gw: 192.168.1.1
 
 vms:
   - id: 700
