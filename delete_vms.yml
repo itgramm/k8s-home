@@ -5,24 +5,6 @@
 
   vars_files:
     - vm_vars.yml
-
-  tasks:
-    - name: Stop VMs
-      community.general.proxmox_kvm:
-        api_user: "{{ proxmox_user }}"
-        api_password: "{{ proxmox_password }}"
-        api_host: "{{ proxmox_host }}"
-        name: "{{ item.name }}"
-        node: "{{ proxmox_node }}"
-        state: stopped
-        force: true
-      with_items: "{{ vms }}"
-    - name: Delete all VMs
-      community.general.proxmox_kvm:
-        api_user: root@pam
-        api_password: "{{ proxmox_password }}"
-        api_host: "{{ proxmox_host }}"
-        name: "{{ item.name }}"
-        node: "{{ proxmox_node }}"
-        state: absent
-      with_items: "{{ vms }}"
+  roles:
+    - stop_vm
+    - delete_vm

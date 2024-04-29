@@ -1,0 +1,9 @@
+---
+##
+# Haproxy installation
+# 
+##
+
+- name: Install haproxy
+  ansible.builtin.apt:
+    name: haproxy

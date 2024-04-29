@@ -1,0 +1,13 @@
+---
+##
+# set /etc/hosts
+# 
+##
+
+- name: Set /etc/hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: |
+      {{ hostvars[inventory_hostname].groups.k8s_master[0] }} k8s-1
+      {{ hostvars[inventory_hostname].groups.k8s_master2[0] }}  k8s-2
+      {{ hostvars[inventory_hostname].groups.proxy[0] }}  proxy

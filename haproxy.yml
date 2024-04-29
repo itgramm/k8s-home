@@ -1,46 +1,13 @@
 ---
 - name: Configure HAproxy
   hosts: proxy
+  become: yes
   gather_facts: no
 
   vars_files:
     - vm_vars.yml
-  
-  tasks:
-    - name: Install haproxy
-      become: yes
-      ansible.builtin.apt:
-       name: haproxy
-    
-    - name: Configure haproxy
-      become: yes
-      ansible.builtin.blockinfile:
-        path: /etc/haproxy/haproxy.cfg
-        block: |
-          frontend kubernetes-frontend
-            bind *:6443
-            mode tcp
-            option tcplog
-            default_backend kubernetes-backend
-
-          backend kubernetes-backend
-              mode tcp
-              option tcp-check
-              balance roundrobin
-              server k8s-1 {{ hostvars[inventory_hostname].groups.k8s_master[0] }}:6443 check fall 3 rise 2
-              server k8s-2 {{ hostvars[inventory_hostname].groups.k8s_master2[0] }}:6443 check fall 3 rise 2
-    
-    - name: Start and enable haprosy
-      become: yes
-      ansible.builtin.shell: |
-          systemctl start haproxy
-          systemctl enable haproxy
-          systemctl restart haproxy
-    - name: Set /etc/hosts
-      become: yes
-      ansible.builtin.blockinfile:
-        path: /etc/hosts
-        block: |
-          {{ hostvars[inventory_hostname].groups.k8s_master[0] }} k8s-1
-          {{ hostvars[inventory_hostname].groups.k8s_master2[0] }}  k8s-2
-          {{ hostvars[inventory_hostname].groups.proxy[0] }}  proxy
+  roles: 
+    - haproxy_install
+    - haproxy_config
+    - haproxy_start
+    - set_hosts

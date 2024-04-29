@@ -1,0 +1,22 @@
+---
+##
+# Haproxy config
+# 
+##
+
+- name: Configure haproxy
+  ansible.builtin.blockinfile:
+    path: /etc/haproxy/haproxy.cfg
+    block: |
+      frontend kubernetes-frontend
+        bind *:6443
+        mode tcp
+        option tcplog
+        default_backend kubernetes-backend
+
+      backend kubernetes-backend
+          mode tcp
+          option tcp-check
+          balance roundrobin
+          server k8s-1 {{ hostvars[inventory_hostname].groups.k8s_master[0] }}:6443 check fall 3 rise 2
+          server k8s-2 {{ hostvars[inventory_hostname].groups.k8s_master2[0] }}:6443 check fall 3 rise 2

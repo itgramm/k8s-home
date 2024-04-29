@@ -1,0 +1,8 @@
+---
+##
+# Install kubelet kubeadm kubectl
+# 
+##
+
+- name: Install kubelet kubeadm kubectl
+  ansible.builtin.script: files/kubectl_config.sh

@@ -1,0 +1,22 @@
+---
+##
+# Configuration VM
+# 
+##
+
+- name: Update VM configuration
+  community.general.proxmox_kvm:
+    api_user: "{{ proxmox_user }}"
+    api_password: "{{ proxmox_password }}"
+    api_host: "{{ proxmox_host }}"
+    node: "{{ proxmox_node }}"
+    name: "{{ item.name }}"
+    net:
+      net0: 'virtio,bridge={{ proxmox_bridge }},tag=77'
+    ipconfig:
+      ipconfig0: 'ip={{ item.ip }}/24,gw=192.168.1.1'
+    sshkeys: "{{ sshkey }}"
+    ciuser: "{{ cloudinit_user }}"
+    cipassword: "{{ cloudinit_password }}"
+    update: yes
+  with_items: "{{ vms }}"

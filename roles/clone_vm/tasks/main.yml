@@ -1,0 +1,18 @@
+---
+##
+# Clone VM from template
+# 
+##
+
+- name: Clone VM from template
+  community.general.proxmox_kvm:
+    api_user: "{{ proxmox_user }}"
+    api_password: "{{ proxmox_password }}"
+    api_host: "{{ proxmox_host }}"
+    node: "{{ proxmox_node }}"
+    vmid: "{{ template_id }}"
+    newid: "{{ item.id }}"
+    name: "{{ item.name }}"
+    onboot: true
+    clone: arbitrary
+  with_items: "{{ vms }}"

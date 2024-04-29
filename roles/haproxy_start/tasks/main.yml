@@ -1,0 +1,11 @@
+---
+##
+# Haproxy start and enable
+# 
+##
+
+- name: Start and enable haproxy
+  ansible.builtin.shell: |
+      systemctl start haproxy
+      systemctl enable haproxy
+      systemctl restart haproxy

@@ -1,0 +1,9 @@
+---
+##
+# wait server after reboot
+# 
+##
+
+- name: Wait for server to restart
+  reboot:
+    reboot_timeout: 3600
